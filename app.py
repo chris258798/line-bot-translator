@@ -7,7 +7,7 @@ import google.generativeai as genai
 
 app = Flask(__name__)
 
-# 讀取環境變數（也就是你記事本裡的那三把鑰匙）
+# 讀取環境變數
 LINE_CHANNEL_ACCESS_TOKEN = os.environ.get('LINE_CHANNEL_ACCESS_TOKEN')
 LINE_CHANNEL_SECRET = os.environ.get('LINE_CHANNEL_SECRET')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
@@ -17,7 +17,7 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 # 設定 Gemini AI
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-3.8-flash')
+model = genai.GenerativeModel('gemini-3.5-Flash-Lite')
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -50,6 +50,8 @@ def handle_message(event):
         response = model.generate_content(prompt)
         translated_text = response.text.strip()
     except Exception as e:
+        # 這裡加入了把錯誤印出來的指令！！！
+        print(f"Gemini 發生錯誤了，詳細原因：{e}") 
         translated_text = "翻譯發生錯誤，請稍後再試。"
 
     # 將翻譯結果傳回 LINE
