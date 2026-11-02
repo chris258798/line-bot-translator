@@ -54,14 +54,12 @@ def handle_message(event):
         print(f"Gemini 發生錯誤了，詳細原因：{e}") 
         translated_text = "翻譯發生錯誤，請稍後再試。"
 
-    # 將翻譯結果傳回 LINE
+      # 將翻譯結果傳回 LINE
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(
-            text=translated_text,
-            quote_token=event.message.quote_token
-        )
+        TextSendMessage(text=translated_text)
     )
+
 
 
 if __name__ == "__main__":
